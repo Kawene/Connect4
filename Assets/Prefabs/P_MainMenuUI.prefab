@@ -1596,6 +1596,9 @@ MonoBehaviour:
   _colorPickerControl: {fileID: 5378478405200555937}
   _player1Color: {fileID: 4314100609445051098}
   _player2Color: {fileID: 387850826892707229}
+  _player1Name: {fileID: 441133165528022446}
+  _player2Name: {fileID: 1574584389858820014}
+  _numberOfWins: {fileID: 2905682084221205028}
 --- !u!1 &5601555901370158939
 GameObject:
   m_ObjectHideFlags: 0
@@ -2142,7 +2145,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2123129460976903237}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 600276052289999959}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6378427948491203762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2990,7 +3005,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 32377406736716460, guid: a1be1f486e97ce549b3c49efb2a6cf25, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1226426031425255468, guid: a1be1f486e97ce549b3c49efb2a6cf25, type: 3}
       propertyPath: m_Name
@@ -3002,7 +3017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2599170620435790339, guid: a1be1f486e97ce549b3c49efb2a6cf25, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5085870304937395031, guid: a1be1f486e97ce549b3c49efb2a6cf25, type: 3}
       propertyPath: m_Pivot.x

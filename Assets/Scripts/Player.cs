@@ -34,6 +34,5 @@ public class Player
     public void GameWon()
     {
         ++_score;
-        Debug.Log($"{_name} won!");
     }
 }

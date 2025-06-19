@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,12 +32,34 @@ public class GameManager : MonoBehaviour
         _selectColumnAction.Enable();
         _selectColumnAction.performed += ctx => SelectColumn();
 
-        _players.Add(new Player("Evil", Color.red));
-        _players.Add(new Player("Good", Color.yellow));
+        string player1Name = PlayerPrefs.GetString("Player1Name", "Player1");
+        string player2Name = PlayerPrefs.GetString("Player2Name", "Player2");
+        Color player1Color;
+        Color player2Color;
 
-        _gameUI.Initialize(_players[0], _players[1]);
+        if (!ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("Player1Color", "FF0000"), out player1Color))
+        {
+            player1Color = Color.red;
+        }
+
+        if (!ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("Player2Color", "FFFF00"), out player2Color))
+        {
+            player2Color = Color.yellow; 
+        }
+
+        _maxScore = PlayerPrefs.GetInt("NumberOfWins", 1);
+
+        _players.Add(new Player(player1Name, player1Color));
+        _players.Add(new Player(player2Name, player2Color));
+
+        _gameUI.Initialize(_players[0], _players[1], _maxScore);
 
         Board.OnGameWon += GameWon;
+    }
+
+    private void OnDestroy()
+    {
+        Board.OnGameWon -= GameWon;
     }
 
     private void OnDisable()
@@ -71,6 +94,7 @@ public class GameManager : MonoBehaviour
     {
         //Visual effect...
         winner.GameWon();
+        _gameUI.UpdateScore(winner);
         _placeTokenAction.Disable();
         _selectColumnAction.Disable();
 
@@ -92,7 +116,7 @@ public class GameManager : MonoBehaviour
         _players[1] = temp;
         _currentPlayerIndex = 0;
 
-        _gameUI.Initialize(_players[0], _players[1]);
+        _gameUI.Initialize(_players[0], _players[1], _maxScore);
         _placeTokenAction.Enable();
         _selectColumnAction.Enable();
         _board.ClearBoard();
@@ -100,7 +124,6 @@ public class GameManager : MonoBehaviour
 
     private void GameFinished()
     {
-        Debug.Log("Main Menu ... ");
-
+        SceneManager.LoadScene("MainMenu");
     }
 }
