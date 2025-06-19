@@ -12,11 +12,14 @@ public class Column : MonoBehaviour
 
     private int _currentSlotIndex = 0;
 
-    public int PlaceToken()
+    public int PlaceToken(Player player)
     {
-        Assert.IsTrue(_currentSlotIndex < _slots.Count, "No more slots available in this column.");
-        _slots[_currentSlotIndex++].ChangeColor();
-        return _currentSlotIndex;
+        if (_currentSlotIndex < _slots.Count)
+        {
+            _slots[_currentSlotIndex].ChangeColor(player);
+            return _currentSlotIndex++;
+        }
+        return -1;
     }
 
     public void Selected()
@@ -27,5 +30,10 @@ public class Column : MonoBehaviour
     public void Unselected()
     {
         _arrow.SetActive(false);
+    }
+
+    public bool IsSelectedByPlayer(Player player, int row)
+    {
+        return _slots[row].PlayerOwner == player;
     }
 }

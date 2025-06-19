@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
     private int _currentPlayerIndex;
+
+    private List<Player> _players = new List<Player>(2);
 
     private InputActions _inputAction;
     private InputAction _placeTokenAction, _selectColumnAction;
@@ -16,6 +19,9 @@ public class GameManager : MonoBehaviour
         _inputAction = new InputActions();
         _placeTokenAction = _inputAction.PlayerInput.PlaceToken;
         _selectColumnAction = _inputAction.PlayerInput.SelectColumn;
+
+        _players.Add(new Player("Player 1", Color.red));
+        _players.Add(new Player("Player 2", Color.yellow));
     }
 
     private void OnEnable()
@@ -48,6 +54,7 @@ public class GameManager : MonoBehaviour
 
     public void PlaceToken()
     {
-        _board.PlaceTokenInBoard();
+        _board.PlaceTokenInBoard(_players[_currentPlayerIndex]);
+        _currentPlayerIndex = (_currentPlayerIndex + 1) % 2;
     }
 }

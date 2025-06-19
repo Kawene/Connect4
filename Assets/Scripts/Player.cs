@@ -1,16 +1,19 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField]
+    private Color _playerColor;
+    public Color PlayerColor => _playerColor;
+
+    private string _name;
+
+    public string Name => _name;
+
+    public Player(string name, Color color)
     {
-        
+        _name = name;
+        _playerColor = color;
     }
 }

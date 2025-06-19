@@ -5,10 +5,16 @@ public class Slot : MonoBehaviour
     [SerializeField]
     private MeshRenderer _selected;
 
-    public void ChangeColor()
+    private Player _playerOwner;
+
+    public Player PlayerOwner => _playerOwner;
+
+    public void ChangeColor(Player player)
     {
         _selected.enabled = true;
 
-        //Get player color then assign it
+        _playerOwner = player;
+
+        _selected.material.color = player.PlayerColor;
     }
 }

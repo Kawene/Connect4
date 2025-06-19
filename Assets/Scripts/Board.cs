@@ -1,5 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
+
+enum Direction
+{
+    Top,
+    Down,
+    Left,
+    Right,
+    LeftDiagonalTop,
+    LeftDiagonalDown,
+    RightDiagonalTop,
+    RightDiagonalDown
+}
 
 public class Board : MonoBehaviour
 {
@@ -14,17 +27,106 @@ public class Board : MonoBehaviour
         _columns[_selectedColumnIndex].Selected();
     }
 
-    public void CheckWin(int columnIndex, int rowIndex)
+    public void PlaceTokenInBoard(Player player)
     {
-        //Check horizontal, vertical, and diagonal connections for a win condition ...
-        Debug.Log($"Checking win condition for column {columnIndex}, row {rowIndex}");
+        int row = _columns[_selectedColumnIndex].PlaceToken(player);
+        CheckWin(_selectedColumnIndex, row, player);       
     }
 
-    public void PlaceTokenInBoard()
+    public void CheckWin(int columnIndex, int rowIndex, Player player)
     {
-        int row = _columns[_selectedColumnIndex].PlaceToken();
-        CheckWin(_selectedColumnIndex, row);
+
+        int t1 = CheckTopDown(player, rowIndex, columnIndex);
+        int t2 = CheckLeftRight(player, rowIndex, columnIndex);
+        int t3 = CheckLeftDiagonal(player, rowIndex, columnIndex);
+        int t4 = CheckRightDiagonal(player, rowIndex, columnIndex);
+
+        if (CheckTopDown(player, rowIndex, columnIndex) >= 3 ||
+            CheckLeftRight(player, rowIndex, columnIndex) >= 3 ||
+            CheckLeftDiagonal(player, rowIndex, columnIndex) >= 3 ||
+            CheckRightDiagonal(player, rowIndex, columnIndex) >= 3)
+        {
+            Debug.Log($"GG {player.Name} WON");
+        }
     }
+
+    private int CheckTopDown(Player player, int row, int col)
+    {
+        return CheckDirection(Direction.Top, player, 0, row, col) 
+            + CheckDirection(Direction.Down, player, 0, row, col);
+    }
+    private int CheckLeftRight(Player player, int row, int col)
+    {
+        return CheckDirection(Direction.Left, player, 0, row, col) 
+            + CheckDirection(Direction.Right, player, 0, row, col);
+    }
+    private int CheckLeftDiagonal(Player player, int row, int col)
+    {
+        return CheckDirection(Direction.LeftDiagonalDown, player, 0, row, col) 
+            + CheckDirection(Direction.LeftDiagonalTop, player, 0, row, col);
+    }
+
+    private int CheckRightDiagonal(Player player, int row, int col)
+    {
+        return CheckDirection(Direction.RightDiagonalDown, player, 0, row, col) 
+            + CheckDirection(Direction.RightDiagonalTop, player, 0, row, col);
+    }
+
+    private int CheckDirection(Direction direction, Player player, int iteration, int row, int col)
+    {
+        if (iteration >= 3)
+        {
+            return iteration;
+        }
+
+        switch (direction)
+            {
+            case Direction.Top:
+                ++row;
+                break;
+            case Direction.Down:
+                --row;
+                break;
+            case Direction.Left:
+                --col;
+                break;
+            case Direction.Right:
+                ++col;
+                break;
+            case Direction.LeftDiagonalTop:
+                ++row;
+                --col;
+                break;
+            case Direction.LeftDiagonalDown:
+                --row;
+                --col;
+                break;
+            case Direction.RightDiagonalTop:
+                ++row;
+                ++col;
+                break;
+            case Direction.RightDiagonalDown:
+                --row;
+                ++col;
+                break;
+        }
+
+        if (row > 5 || col >= _columns.Count || row < 0 || col < 0)
+        {
+            return iteration;
+        }
+
+        if (_columns[col].IsSelectedByPlayer(player, row))
+        {
+            return CheckDirection(direction, player, iteration + 1, row, col);
+        }
+        else
+        {
+            return iteration;
+        }
+
+    }
+
 
     public void SelectRight()
     {
