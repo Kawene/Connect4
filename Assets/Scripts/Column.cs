@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -35,5 +36,15 @@ public class Column : MonoBehaviour
     public bool IsSelectedByPlayer(Player player, int row)
     {
         return _slots[row].PlayerOwner == player;
+    }
+
+    public void ClearColumn()
+    {
+        foreach (var slot in _slots)
+        {
+            slot.ClearSlot();
+        }
+        _currentSlotIndex = 0;
+        Unselected();
     }
 }

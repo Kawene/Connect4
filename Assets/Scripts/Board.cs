@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 enum Direction
 {
@@ -21,10 +20,12 @@ public class Board : MonoBehaviour
 
     private int _selectedColumnIndex;
 
+    public delegate void GameWonEvent(Player player);
+    public static GameWonEvent OnGameWon;
+
     private void Start()
     {
-        _selectedColumnIndex = 3;
-        _columns[_selectedColumnIndex].Selected();
+        SelectDefaultColumn();
     }
 
     public bool PlaceTokenInBoard(Player player)
@@ -50,7 +51,7 @@ public class Board : MonoBehaviour
             CheckLeftDiagonal(player, rowIndex, columnIndex) >= 3 ||
             CheckRightDiagonal(player, rowIndex, columnIndex) >= 3)
         {
-            Debug.Log($"GG {player.Name} WON");
+            OnGameWon(player);
         }
     }
 
@@ -131,6 +132,14 @@ public class Board : MonoBehaviour
 
     }
 
+    public void ClearBoard()
+    {
+        foreach (var column in _columns)
+        {
+            column.ClearColumn();
+        }
+        SelectDefaultColumn();
+    }
 
     public void SelectRight()
     {
@@ -151,6 +160,12 @@ public class Board : MonoBehaviour
         {
             _selectedColumnIndex = _columns.Count - 1;
         }
+        _columns[_selectedColumnIndex].Selected();
+    }
+
+    private void SelectDefaultColumn()
+    {
+        _selectedColumnIndex = 3;
         _columns[_selectedColumnIndex].Selected();
     }
 }

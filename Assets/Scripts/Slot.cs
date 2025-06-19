@@ -9,6 +9,12 @@ public class Slot : MonoBehaviour
 
     public Player PlayerOwner => _playerOwner;
 
+    public void ClearSlot()
+    {
+        _selected.enabled = false;
+        _playerOwner = null;
+    }
+
     public void ChangeColor(Player player)
     {
         _selected.enabled = true;
