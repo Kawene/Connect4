@@ -21,6 +21,16 @@ public class Player
         _score = 0;
     }
 
+    public void SetName(string name)
+    {
+        _name = name;
+    }
+
+    public void SetColor(Color color)
+    {
+        _playerColor = color;
+    }
+
     public void GameWon()
     {
         ++_score;
