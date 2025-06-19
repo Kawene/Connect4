@@ -27,10 +27,14 @@ public class Board : MonoBehaviour
         _columns[_selectedColumnIndex].Selected();
     }
 
-    public void PlaceTokenInBoard(Player player)
+    public bool PlaceTokenInBoard(Player player)
     {
         int row = _columns[_selectedColumnIndex].PlaceToken(player);
-        CheckWin(_selectedColumnIndex, row, player);       
+        if (row < 0)        
+            return false;
+        
+        CheckWin(_selectedColumnIndex, row, player);
+        return true;
     }
 
     public void CheckWin(int columnIndex, int rowIndex, Player player)
@@ -99,7 +103,7 @@ public class Board : MonoBehaviour
                 break;
             case Direction.LeftDiagonalDown:
                 --row;
-                --col;
+                ++col;
                 break;
             case Direction.RightDiagonalTop:
                 ++row;
@@ -107,7 +111,7 @@ public class Board : MonoBehaviour
                 break;
             case Direction.RightDiagonalDown:
                 --row;
-                ++col;
+                --col;
                 break;
         }
 

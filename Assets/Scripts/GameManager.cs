@@ -14,14 +14,19 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Board _board;
 
+    [SerializeField]
+    private GameUI _gameUI;
+
     private void Awake()
     {
         _inputAction = new InputActions();
         _placeTokenAction = _inputAction.PlayerInput.PlaceToken;
         _selectColumnAction = _inputAction.PlayerInput.SelectColumn;
 
-        _players.Add(new Player("Player 1", Color.red));
-        _players.Add(new Player("Player 2", Color.yellow));
+        _players.Add(new Player("Evil", Color.red));
+        _players.Add(new Player("Good", Color.yellow));
+
+        _gameUI.Initialize(_players[0], _players[1]);
     }
 
     private void OnEnable()
@@ -54,7 +59,10 @@ public class GameManager : MonoBehaviour
 
     public void PlaceToken()
     {
-        _board.PlaceTokenInBoard(_players[_currentPlayerIndex]);
-        _currentPlayerIndex = (_currentPlayerIndex + 1) % 2;
+        if (_board.PlaceTokenInBoard(_players[_currentPlayerIndex]))
+        {
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % 2;
+            _gameUI.SetPlayerIndication(_players[_currentPlayerIndex]);
+        }
     }
 }
