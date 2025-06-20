@@ -20,8 +20,8 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        _player1 = new Player("Evil", Color.red);
-        _player2 = new Player("Good", Color.yellow);
+        _player1 = new Player("Bob", Color.red);
+        _player2 = new Player("Alice", Color.yellow);
 
         _player1Name.text = PlayerPrefs.GetString("Player1Name", _player1.Name);
         _player2Name.text = PlayerPrefs.GetString("Player2Name", _player2.Name);
@@ -35,7 +35,7 @@ public class MainMenu : MonoBehaviour
             _player2.SetColor(player2Color);
         }
 
-        _numberOfWins.text = PlayerPrefs.GetInt("NumberOfWins", 1).ToString();
+        _numberOfWins.text = PlayerPrefs.GetInt("NumberOfWins").ToString();
     }
 
     private void Update()
