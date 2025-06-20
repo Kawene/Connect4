@@ -80,5 +80,13 @@ public class MainMenu : MonoBehaviour
         _colorPickerControl.OpenDialog(_player2);
     }
 
-
+    public void QuitGame()
+    {
+#if UNITY_STANDALONE
+        Application.Quit();
+#endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 }

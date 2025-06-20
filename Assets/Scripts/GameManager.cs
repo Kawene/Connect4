@@ -12,13 +12,16 @@ public class GameManager : MonoBehaviour
     private List<Player> _players = new List<Player>(2);
 
     private InputActions _inputAction;
-    private InputAction _placeTokenAction, _selectColumnAction;
+    private InputAction _placeTokenAction, _selectColumnAction, _pauseAction;
 
     [SerializeField]
     private Board _board;
 
     [SerializeField]
     private GameUI _gameUI;
+
+    [SerializeField]
+    private PauseMenu _pauseMenu;
 
     private void Awake()
     {
@@ -31,6 +34,10 @@ public class GameManager : MonoBehaviour
         _selectColumnAction = _inputAction.PlayerInput.SelectColumn;
         _selectColumnAction.Enable();
         _selectColumnAction.performed += ctx => SelectColumn();
+
+        _pauseAction = _inputAction.PlayerInput.Pause;
+        _pauseAction.Enable();
+        _pauseAction.performed += ctx => ToggleVisibilityPause();
 
         string player1Name = PlayerPrefs.GetString("Player1Name", "Player1");
         string player2Name = PlayerPrefs.GetString("Player2Name", "Player2");
@@ -95,7 +102,6 @@ public class GameManager : MonoBehaviour
 
     private void GameWon(Player winner)
     {
-        //Visual effect...
         winner.GameWon();
         _gameUI.UpdateScore(winner);
         _placeTokenAction.Disable();
@@ -127,5 +133,10 @@ public class GameManager : MonoBehaviour
     private void GameFinished()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void ToggleVisibilityPause()
+    {
+        _pauseMenu.gameObject.SetActive(!_pauseMenu.gameObject.activeInHierarchy);
     }
 }

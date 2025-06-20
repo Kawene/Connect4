@@ -108,6 +108,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""0324aa02-187a-4f1d-a149-af37f0735a6c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -187,6 +196,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""PlaceToken"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ce03989-585b-4405-8ab9-76902120fd74"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -197,6 +217,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
         m_PlayerInput_SelectColumn = m_PlayerInput.FindAction("SelectColumn", throwIfNotFound: true);
         m_PlayerInput_PlaceToken = m_PlayerInput.FindAction("PlaceToken", throwIfNotFound: true);
+        m_PlayerInput_Pause = m_PlayerInput.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -279,6 +300,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPlayerInputActions> m_PlayerInputActionsCallbackInterfaces = new List<IPlayerInputActions>();
     private readonly InputAction m_PlayerInput_SelectColumn;
     private readonly InputAction m_PlayerInput_PlaceToken;
+    private readonly InputAction m_PlayerInput_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerInput".
     /// </summary>
@@ -298,6 +320,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerInput/PlaceToken".
         /// </summary>
         public InputAction @PlaceToken => m_Wrapper.m_PlayerInput_PlaceToken;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerInput/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_PlayerInput_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -330,6 +356,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PlaceToken.started += instance.OnPlaceToken;
             @PlaceToken.performed += instance.OnPlaceToken;
             @PlaceToken.canceled += instance.OnPlaceToken;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -347,6 +376,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PlaceToken.started -= instance.OnPlaceToken;
             @PlaceToken.performed -= instance.OnPlaceToken;
             @PlaceToken.canceled -= instance.OnPlaceToken;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -401,5 +433,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlaceToken(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
     }
 }
