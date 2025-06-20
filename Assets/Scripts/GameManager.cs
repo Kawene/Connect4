@@ -108,7 +108,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Action with button
     public void StartNextGame()
     {
         var temp = _players[0];

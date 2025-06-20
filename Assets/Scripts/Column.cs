@@ -47,4 +47,19 @@ public class Column : MonoBehaviour
         _currentSlotIndex = 0;
         Unselected();
     }
+
+    public void SetWinningSlot(int row)
+    {
+        _slots[row].SetWinningSlot();
+    }
+
+    public void RemoveWinnigSlot(int row)
+    {
+        _slots[row].RemoveWinningSlot();
+    }
+
+    public void HighlightSlot(int row)
+    {
+        _slots[row].HighlightWinningSlot();
+    }
 }

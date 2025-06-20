@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 enum Direction
 {
@@ -23,6 +24,8 @@ public class Board : MonoBehaviour
     public delegate void GameWonEvent(Player player);
     public static GameWonEvent OnGameWon;
 
+    private List<(int, int)> _winningPosition = new List<(int, int)>(4);
+
     private void Start()
     {
         SelectDefaultColumn();
@@ -34,50 +37,51 @@ public class Board : MonoBehaviour
         if (row < 0)        
             return false;
         
-        CheckWin(_selectedColumnIndex, row, player);
+        CheckWin(player, row, _selectedColumnIndex);
         return true;
     }
 
-    public void CheckWin(int columnIndex, int rowIndex, Player player)
+    public void CheckWin(Player player, int row, int col)
     {
-
-        int t1 = CheckTopDown(player, rowIndex, columnIndex);
-        int t2 = CheckLeftRight(player, rowIndex, columnIndex);
-        int t3 = CheckLeftDiagonal(player, rowIndex, columnIndex);
-        int t4 = CheckRightDiagonal(player, rowIndex, columnIndex);
-
-        if (CheckTopDown(player, rowIndex, columnIndex) >= 3 ||
-            CheckLeftRight(player, rowIndex, columnIndex) >= 3 ||
-            CheckLeftDiagonal(player, rowIndex, columnIndex) >= 3 ||
-            CheckRightDiagonal(player, rowIndex, columnIndex) >= 3)
+        if (CheckTopDown(player, row, col) >= 3 ||
+            CheckLeftRight(player, row, col) >= 3 ||
+            CheckLeftDiagonal(player, row, col) >= 3 ||
+            CheckRightDiagonal(player, row, col) >= 3)
         {
+            _columns[col].SetWinningSlot(row);
+            _winningPosition.Add((row, col));
+            HighlightWinningSlots();
             OnGameWon(player);
         }
     }
 
     private int CheckTopDown(Player player, int row, int col)
     {
-        return CheckDirection(Direction.Top, player, 0, row, col) 
-            + CheckDirection(Direction.Down, player, 0, row, col);
+        ResetWinning();
+        return CheckDirection(Direction.Top, player, row, col, 0) 
+            + CheckDirection(Direction.Down, player, row, col, 0);
     }
     private int CheckLeftRight(Player player, int row, int col)
     {
-        return CheckDirection(Direction.Left, player, 0, row, col) 
-            + CheckDirection(Direction.Right, player, 0, row, col);
+        ResetWinning();
+        return CheckDirection(Direction.Left, player, row, col, 0) 
+            + CheckDirection(Direction.Right, player, row, col, 0);
     }
     private int CheckLeftDiagonal(Player player, int row, int col)
     {
-        return CheckDirection(Direction.LeftDiagonalDown, player, 0, row, col) 
-            + CheckDirection(Direction.LeftDiagonalTop, player, 0, row, col);
+        ResetWinning();
+        return CheckDirection(Direction.LeftDiagonalDown, player, row, col, 0) 
+            + CheckDirection(Direction.LeftDiagonalTop, player, row, col, 0);
     }
 
     private int CheckRightDiagonal(Player player, int row, int col)
     {
-        return CheckDirection(Direction.RightDiagonalDown, player, 0, row, col) 
-            + CheckDirection(Direction.RightDiagonalTop, player, 0, row, col);
+        ResetWinning();
+        return CheckDirection(Direction.RightDiagonalDown, player, row, col, 0) 
+            + CheckDirection(Direction.RightDiagonalTop, player, row, col, 0);
     }
 
-    private int CheckDirection(Direction direction, Player player, int iteration, int row, int col)
+    private int CheckDirection(Direction direction, Player player, int row, int col, int iteration)
     {
         if (iteration >= 3)
         {
@@ -123,7 +127,9 @@ public class Board : MonoBehaviour
 
         if (_columns[col].IsSelectedByPlayer(player, row))
         {
-            return CheckDirection(direction, player, iteration + 1, row, col);
+            _columns[col].SetWinningSlot(row);
+            _winningPosition.Add((row, col));
+            return CheckDirection(direction, player, row, col, iteration + 1);
         }
         else
         {
@@ -167,5 +173,22 @@ public class Board : MonoBehaviour
     {
         _selectedColumnIndex = 3;
         _columns[_selectedColumnIndex].Selected();
+    }
+
+    private void ResetWinning()
+    {
+        foreach (var position in _winningPosition)
+        {
+            _columns[position.Item2].RemoveWinnigSlot(position.Item1);
+        }
+        _winningPosition.Clear();
+    }
+
+    private void HighlightWinningSlots()
+    {
+        foreach (var position in _winningPosition)
+        {
+            _columns[position.Item2].HighlightSlot(position.Item1);
+        }
     }
 }
