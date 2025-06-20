@@ -16,3 +16,37 @@ I had 48 hours to do a Connect 4 game, and here is the result.
 
 ![Winner](https://github.com/user-attachments/assets/8182c633-0f26-4cd2-a13c-58b7f123868b)
 
+## Inputs
+
+### Move arrow left to right:
+
+Mouse and Keyboard
+
+- Left and right arrow
+- A and D
+
+Controller
+
+- Left and Right Gamepad
+- Left and right Joystick
+
+### Place Token:
+
+Mouse and Keyboard
+
+- Spacebar
+- Enter
+
+Controller
+- South button (A for Xbox)
+
+### Pause Menu
+
+Mouse and Keyboard
+
+- Escape
+
+Controller
+
+- Start button
+
