@@ -45,15 +45,6 @@ public class MainMenu : MonoBehaviour
 
         _player1.SetName(_player1Name.text);
         _player2.SetName(_player2Name.text);
-
-        if (int.TryParse(_numberOfWins.text, out int wins))
-        {
-            _numberOfWins.text = wins.ToString();
-        }
-        else
-        {
-            _numberOfWins.text = "";
-        }
     }
 
     public void Play()

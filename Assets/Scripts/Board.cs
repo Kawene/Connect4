@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 enum Direction
 {
@@ -189,6 +188,14 @@ public class Board : MonoBehaviour
         foreach (var position in _winningPosition)
         {
             _columns[position.Item2].HighlightSlot(position.Item1);
+        }
+    }
+
+    public void SetArrowColor(Color color)
+    {
+        foreach (var column in _columns)
+        {
+            column.SetArrowColor(color);
         }
     }
 }

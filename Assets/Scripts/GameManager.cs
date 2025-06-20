@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
 
         _gameUI.Initialize(_players[0], _players[1], _maxScore);
 
+        _board.SetArrowColor(_players[_currentPlayerIndex].PlayerColor);
+
         Board.OnGameWon += GameWon;
     }
 
@@ -87,6 +89,7 @@ public class GameManager : MonoBehaviour
         {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % 2;
             _gameUI.SetPlayerIndication(_players[_currentPlayerIndex]);
+            _board.SetArrowColor(_players[_currentPlayerIndex].PlayerColor);
         }
     }
 

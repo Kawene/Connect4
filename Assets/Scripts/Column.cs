@@ -11,7 +11,14 @@ public class Column : MonoBehaviour
     [SerializeField]
     private GameObject _arrow;
 
+    private MeshRenderer _arrowMesh;
+
     private int _currentSlotIndex = 0;
+
+    private void Awake()
+    {
+        _arrowMesh = _arrow.GetComponent<MeshRenderer>();
+    }
 
     public int PlaceToken(Player player)
     {
@@ -61,5 +68,10 @@ public class Column : MonoBehaviour
     public void HighlightSlot(int row)
     {
         _slots[row].HighlightWinningSlot();
+    }
+
+    public void SetArrowColor(Color color)
+    {
+        _arrowMesh.material.color = color;
     }
 }

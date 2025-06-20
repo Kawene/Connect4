@@ -29,6 +29,8 @@ public class ColorPickerControl : MonoBehaviour
         CreateOutputImage();
 
         UpdateOutputImage();
+
+        _hueSlider.value = _currentHue;
     }
 
 
