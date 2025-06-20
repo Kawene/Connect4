@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private PauseMenu _pauseMenu;
 
-    private void Awake()
+    private void Start()
     {
         SetInputActions();
 

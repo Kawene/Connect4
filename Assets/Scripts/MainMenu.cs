@@ -20,11 +20,11 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        _player1 = new Player("Bob", Color.red);
-        _player2 = new Player("Alice", Color.yellow);
+        _player1 = new Player("Player1", Color.red);
+        _player2 = new Player("Player2", Color.yellow);
 
-        _player1Name.text = PlayerPrefs.GetString("Player1Name", _player1.Name);
-        _player2Name.text = PlayerPrefs.GetString("Player2Name", _player2.Name);
+        _player1Name.text = PlayerPrefs.GetString("Player1Name");
+        _player2Name.text = PlayerPrefs.GetString("Player2Name");
 
         if (ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("Player1Color", "FF0000"), out Color player1Color))
         {
@@ -35,7 +35,9 @@ public class MainMenu : MonoBehaviour
             _player2.SetColor(player2Color);
         }
 
-        _numberOfWins.text = PlayerPrefs.GetInt("NumberOfWins").ToString();
+        int num = PlayerPrefs.GetInt("NumberOfWins");
+        if (num > 0)
+            _numberOfWins.text = num.ToString();
     }
 
     private void Update()
