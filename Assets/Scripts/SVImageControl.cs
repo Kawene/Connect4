@@ -11,13 +11,10 @@ public class SVImageControl : MonoBehaviour, IDragHandler, IPointerClickHandler
     [SerializeField]
     private ColorPickerControl _cpc;
 
-    private RawImage _svImage;
-
     private RectTransform _rectTransform, _pickerTransform;
 
     private void Awake()
     {
-        _svImage = GetComponent<RawImage>();
         _cpc = GetComponentInParent<ColorPickerControl>();
         _rectTransform = GetComponent<RectTransform>();
 

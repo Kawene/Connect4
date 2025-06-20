@@ -25,6 +25,21 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        SetInputActions();
+
+        GetPlayersInfo();
+
+        _maxScore = PlayerPrefs.GetInt("NumberOfWins", 1);
+
+        _gameUI.Initialize(_players[0], _players[1], _maxScore);
+
+        _board.SetArrowColor(_players[_currentPlayerIndex].PlayerColor);
+
+        Board.OnGameWon += GameWon;
+    }
+
+    private void SetInputActions()
+    {
         _inputAction = new InputActions();
 
         _placeTokenAction = _inputAction.PlayerInput.PlaceToken;
@@ -38,7 +53,10 @@ public class GameManager : MonoBehaviour
         _pauseAction = _inputAction.PlayerInput.Pause;
         _pauseAction.Enable();
         _pauseAction.performed += ctx => ToggleVisibilityPause();
+    }
 
+    private void GetPlayersInfo()
+    {
         string player1Name = PlayerPrefs.GetString("Player1Name", "Player1");
         string player2Name = PlayerPrefs.GetString("Player2Name", "Player2");
         Color player1Color;
@@ -51,19 +69,12 @@ public class GameManager : MonoBehaviour
 
         if (!ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("Player2Color", "FFFF00"), out player2Color))
         {
-            player2Color = Color.yellow; 
+            player2Color = Color.yellow;
         }
 
-        _maxScore = PlayerPrefs.GetInt("NumberOfWins", 1);
 
         _players.Add(new Player(player1Name, player1Color));
         _players.Add(new Player(player2Name, player2Color));
-
-        _gameUI.Initialize(_players[0], _players[1], _maxScore);
-
-        _board.SetArrowColor(_players[_currentPlayerIndex].PlayerColor);
-
-        Board.OnGameWon += GameWon;
     }
 
     private void OnDestroy()
